@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Reddit",
+        "site": "https://www.reddit.com/r/worldnews/",
+        "feed": "https://www.reddit.com/r/worldnews/.rss"
+    },
+    {
+        "name": "BBC News",
+        "site": "https://www.bbc.com/news/world",
+        "feed": "http://feeds.bbci.co.uk/news/world/rss.xml"
+    },
+    {
+        "name": "The New York Times",
+        "site": "https://www.nytimes.com/section/world",
+        "feed": "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml"
+    },
+    {
+        "name": "Buzzfeed",
+        "site": "https://www.buzzfeednews.com/section/world",
+        "feed": "https://www.buzzfeed.com/world.xml"
+    },
+    {
+        "name": "Al Jazeera",
+        "site": "https://www.aljazeera.com/",
+        "feed": "https://www.aljazeera.com/xml/rss/all.xml"
+    },
+    {
+        "name": "CNN",
+        "site": "https://edition.cnn.com/world",
+        "feed": "http://rss.cnn.com/rss/edition_world.rss"
+    },
+    {
+        "name": "RT",
+        "site": "https://www.rt.com/news/",
+        "feed": "https://www.rt.com/rss/news/"
+    },
+    {
+        "name": "Sputnik",
+        "site": "https://sputniknews.com/world/",
+        "feed": "https://sputniknews.com/export/rss2/world/index.xml"
+    },
+    {
+        "name": "The Independent",
+        "site": "https://www.independent.co.uk/news/world",
+        "feed": "http://www.independent.co.uk/news/world/rss"
+    },
+    {
+        "name": "Yahoo News",
+        "site": "https://www.yahoo.com/news/world/",
+        "feed": "https://www.yahoo.com/news/world/rss"
+    },
+    {
+        "name": "The Guardian",
+        "site": "https://www.theguardian.com/world",
+        "feed": "https://www.theguardian.com/world/rss"
+    },
+    {
+        "name": "Time",
+        "site": "https://time.com/section/world/",
+        "feed": "http://feeds.feedburner.com/time/world"
+    },
+    {
+        "name": "Vox",
+        "site": "https://www.vox.com/world",
+        "feed": "https://www.vox.com/rss/world/index.xml"
+    },
+    {
+        "name": "South China Morning Post",
+        "site": "https://www.scmp.com/",
+        "feed": "https://www.scmp.com/rss/91/feed"
+    },
+    {
+        "name": "Channel NewsAsia",
+        "site": "https://www.channelnewsasia.com/news/world",
+        "feed": "http://www.channelnewsasia.com/rssfeeds/8395884"
+    },
+    {
+        "name": "Today Online",
+        "site": "https://www.todayonline.com/world",
+        "feed": "https://www.todayonline.com/feed/world"
+    }
+]

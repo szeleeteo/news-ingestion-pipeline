@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Reddit",
+        "site": "https://www.reddit.com/r/worldnews/",
+        "feed": "https://www.reddit.com/r/worldnews/.rss"
+    },
+    {
+        "name": "The New York Times",
+        "site": "https://www.nytimes.com/section/world",
+        "feed": "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml"
+    },
+    {
+        "name": "The Guardian",
+        "site": "https://www.theguardian.com/world",
+        "feed": "https://www.theguardian.com/world/rss"
+    }
+]
