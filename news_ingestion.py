@@ -1,7 +1,6 @@
 import json
 from datetime import datetime, timezone
 from pathlib import Path, PosixPath
-import logging
 
 import feedparser
 from dagster import (
@@ -10,11 +9,9 @@ from dagster import (
     EventMetadataEntry,
     Field,
     List,
-    ModeDefinition,
     Output,
     OutputDefinition,
     PresetDefinition,
-    String,
     file_relative_path,
     pipeline,
     repository,
