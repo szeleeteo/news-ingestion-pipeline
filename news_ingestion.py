@@ -21,7 +21,7 @@ from dagster import (
 
 import data
 
-# NEWS_SOURCES can be easily replaced by retrieving data from database or API
+# NEWS_SOURCES should be easily replaceable by retrieval from database or API
 NEWS_SOURCES = data.SOURCES_MINI
 # NEWS_SOURCES = data.SOURCES_ALL
 
@@ -38,7 +38,7 @@ class DagsterPath(PosixPath):
         for source in NEWS_SOURCES
     ],
 )
-def source_dispatcher(context):
+def get_all_sources(context):
     for source in context.solid_config["sources"]:
         yield Output(value=source, output_name=source["label"])
 
@@ -74,7 +74,9 @@ def save_raw(context, source: Dict):
     articles = source.get("entries")
     if articles:
         source_dir = (
-            Path(file_relative_path(__file__, "data/news/raw/")) / f"{source['label']}"
+            Path(file_relative_path(__file__, "data/news/"))
+            / f"{source['label']}"
+            / "raw"
         )
         updated_at = datetime.fromisoformat(source["updated_at"])
         content_save_dir = (
@@ -100,8 +102,12 @@ def save_raw(context, source: Dict):
                     text=source["name"],
                 ),
                 EventMetadataEntry.text(
-                    label="Number of entries",
+                    label="Number of articles",
                     text=str(len(source["entries"])),
+                ),
+                EventMetadataEntry.path(
+                    label="Output file path",
+                    path=str(content_save_path),
                 ),
                 EventMetadataEntry.text(
                     label="Timestamp",
@@ -117,7 +123,7 @@ def upload_to_datalake(context, saved_files: List[DagsterPath]):
     uploaded_paths = ["path1", "path2"]
     for saved_file in saved_files:
         context.log.info(f"Upload {saved_file} to datalake")
-        # TODO: Upload the file to a S3 bucket and yield Materialization and output
+        # TODO: Upload the file to a S3 bucket and yield Materialization and s3 path
 
     return uploaded_paths
 
@@ -156,27 +162,31 @@ def post_to_microservice(context, data: List[Dict]):
                 "execution": {"multiprocess": {"config": {"max_concurrent": 4}}},
                 "storage": {"filesystem": {}},
                 "loggers": {"console": {"config": {"log_level": "INFO"}}},
-                "solids": {"source_dispatcher": {"config": {"sources": NEWS_SOURCES}}},
+                "solids": {"get_all_sources": {"config": {"sources": NEWS_SOURCES}}},
             },
         )
     ],
 )
 def news_ingestion_pipeline():
-    sources = source_dispatcher()
+    sources = get_all_sources()
 
-    save_raw_solids = []
+    if sources:
+        save_raw_solids = []
+        labels = [news_src["label"] for news_src in NEWS_SOURCES]
 
-    for source_dict, source_solid in zip(NEWS_SOURCES, sources):
-        ingest_solid = ingest_data.alias(f"ingest_data_{source_dict['label']}")
-        update_solid = append_meta.alias(f"append_meta_{source_dict['label']}")
-        save_raw_solid = save_raw.alias(f"save_raw_{source_dict['label']}")
-        save_raw_solids.append(save_raw_solid(update_solid(ingest_solid(source_solid))))
+        for source_solid, label in zip(sources, labels):
+            ingest_solid = ingest_data.alias(f"ingest_data_{label}")
+            update_solid = append_meta.alias(f"append_meta_{label}")
+            save_raw_solid = save_raw.alias(f"save_raw_{label}")
+            save_raw_solids.append(
+                save_raw_solid(update_solid(ingest_solid(source_solid)))
+            )
 
-    transformed_data_solid = transform_data(
-        clean_data(upload_to_datalake(save_raw_solids))
-    )
-    post_to_datawarehouse(transformed_data_solid)
-    post_to_microservice(transformed_data_solid)
+        transformed_data_solid = transform_data(
+            clean_data(upload_to_datalake(save_raw_solids))
+        )
+        post_to_datawarehouse(transformed_data_solid)
+        post_to_microservice(transformed_data_solid)
 
 
 @repository
