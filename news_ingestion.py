@@ -16,6 +16,7 @@ from dagster import (
     pipeline,
     repository,
     solid,
+    String,
     usable_as_dagster_type,
 )
 
@@ -120,7 +121,7 @@ def save_raw(context, source: Dict):
 
 @solid
 def upload_to_datalake(context, saved_files: List[DagsterPath]):
-    uploaded_paths = ["path1", "path2"]
+    uploaded_paths = []
     for saved_file in saved_files:
         context.log.info(f"Upload {saved_file} to datalake")
         # TODO: Upload the file to a S3 bucket and yield Materialization and s3 path
@@ -129,16 +130,16 @@ def upload_to_datalake(context, saved_files: List[DagsterPath]):
 
 
 @solid
-def clean_data(context, data: List[str]):
+def clean_data(context, data: List[String]):
     # For example remove HTML codes
-    clean_data = [{}]
+    clean_data = []
     return clean_data
 
 
 @solid
 def transform_data(context, data: List[Dict]):
     # unify schemas for all data
-    transformed_data = [{}]
+    transformed_data = []
     return transformed_data
 
 
